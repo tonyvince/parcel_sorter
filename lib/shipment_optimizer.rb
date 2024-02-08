@@ -5,11 +5,11 @@ class ShipmentOptimizer
 
   def optimize
     @loader.load_and_sort_parcels
-    manager = ShipmentManager.new
+    shipment_generator = ShipmentGenerator.new
     parcels_by_client = @loader.parcels.group_by { |parcel| parcel[:client_name] }
     parcels_by_client.each do |client, parcels|
-      manager.add_parcels_from_client(client, parcels)
+      shipment_generator.add_parcels_from_client(client, parcels)
     end
-    manager.shipments
+    shipment_generator.shipments
   end
 end

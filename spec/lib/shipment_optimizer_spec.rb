@@ -1,6 +1,6 @@
 require_relative '../../lib/shipment_optimizer'
 require_relative '../../lib/parcel_loader'
-require_relative '../../lib/shipment_manager'
+require_relative '../../lib/shipment_generator'
 require_relative '../../lib/shipment'
 
 RSpec.describe ShipmentOptimizer do
