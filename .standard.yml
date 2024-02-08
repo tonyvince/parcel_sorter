@@ -1,0 +1,3 @@
+ruby_version: 3.2.2
+ignore:
+  - data/*
