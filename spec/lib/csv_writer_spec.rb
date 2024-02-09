@@ -3,6 +3,7 @@ require_relative "../../lib/shipment"
 
 RSpec.describe CsvWriter do
   let(:output_file_path) { "spec/fixtures/test_output.csv" }
+  let(:fixtures_path) { File.dirname(output_file_path) }
   let(:shipments) do
     [
       Shipment.new.tap do |shipment|
@@ -22,6 +23,8 @@ RSpec.describe CsvWriter do
       end
     ]
   end
+
+  before { FileUtils.mkdir_p(fixtures_path) unless Dir.exist?(fixtures_path) }
 
   after do
     File.delete(output_file_path) if File.exist?(output_file_path)

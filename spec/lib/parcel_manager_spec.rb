@@ -5,8 +5,11 @@ require_relative "../../lib/shipment"
 
 RSpec.describe ParcelManager do
   let(:input_file_path) { "spec/fixtures/test_input.csv" }
+  let(:fixtures_path) { File.dirname(input_file_path) }
 
   before do
+    FileUtils.mkdir_p(fixtures_path) unless Dir.exist?(fixtures_path)
+
     CSV.open(input_file_path, "wb") do |csv|
       csv << ["parcel_ref", "client_name", "weight"]
       csv << ["P1", "Client A", 100]

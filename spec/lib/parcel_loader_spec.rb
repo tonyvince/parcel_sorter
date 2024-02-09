@@ -2,10 +2,12 @@ require_relative "../../lib/parcel_loader"
 
 RSpec.describe ParcelLoader do
   let(:test_csv_path) { "spec/fixtures/test_parcels.csv" }
+  let(:fixtures_path) { File.dirname(test_csv_path) }
   let(:parcel_loader) { ParcelLoader.new(test_csv_path) }
 
   before do
-    # Sample content for a test CSV file
+    FileUtils.mkdir_p(fixtures_path) unless Dir.exist?(fixtures_path)
+
     CSV.open(test_csv_path, "wb") do |csv|
       csv << ["parcel_ref", "client_name", "weight"]
       csv << ["P1", "Client A", 500]
