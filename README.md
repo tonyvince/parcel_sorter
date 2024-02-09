@@ -1,4 +1,5 @@
 # Parcel Sorter Application
+![workflow](https://github.com/tonyvince/parcel_sorter/actions/workflows/ci.yml/badge.svg)
 
 ## Description
 

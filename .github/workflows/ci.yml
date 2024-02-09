@@ -1,4 +1,4 @@
-name: Ruby CI
+name: Parcel Sorter CI
 
 on: [push, pull_request]
 
