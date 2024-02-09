@@ -6,15 +6,19 @@ RSpec.describe CsvWriter do
   let(:shipments) do
     [
       Shipment.new.tap do |shipment|
-        shipment.add_parcel({ parcel_ref: 'P1', client_name: 'Client A', weight: 100 })
-        shipment.add_parcel({ parcel_ref: 'P4', client_name: 'Client A', weight: 800 })
+        shipment.add_parcels([
+          { parcel_ref: 'P1', client_name: 'Client A', weight: 100 },
+          { parcel_ref: 'P4', client_name: 'Client A', weight: 800 }
+        ])
       end,
       Shipment.new.tap do |shipment|
-        shipment.add_parcel({ parcel_ref: 'P2', client_name: 'Client B', weight: 500 })
+        shipment.add_parcels([{ parcel_ref: 'P2', client_name: 'Client B', weight: 500 }])
       end,
       Shipment.new.tap do |shipment|
-        shipment.add_parcel({ parcel_ref: 'P3', client_name: 'Client B', weight: 1800 })
-        shipment.add_parcel({ parcel_ref: 'P5', client_name: 'Client C', weight: 300 })
+        shipment.add_parcels([
+          { parcel_ref: 'P3', client_name: 'Client B', weight: 1800 },
+          { parcel_ref: 'P5', client_name: 'Client C', weight: 300 }
+        ])
       end
     ]
   end

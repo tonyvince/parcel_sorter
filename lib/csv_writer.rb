@@ -1,5 +1,8 @@
 # Handles the creation and writing of optimized shipment data to a CSV file.
 # Additionally, outputs shipment details to the console for transparency.
+
+require "csv"
+
 class CsvWriter
   # Writes shipment details to a specified CSV file.
   # @param shipments [Array<Shipment>] Array of optimized shipments.

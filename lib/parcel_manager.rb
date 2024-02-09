@@ -15,8 +15,8 @@ class ParcelManager
     parcels_by_client = @loader.parcels.group_by { |parcel| parcel[:client_name] }.sort_by do |client, parcels|
       -parcels.sum { |parcel| parcel[:weight] }
     end
-    parcels_by_client.each do |_client, parcels|
-      shipment_optimizer.add_parcels_from_client(parcels)
+    parcels_by_client.each do |client, parcels|
+      shipment_optimizer.add_parcels_from_client(client, parcels)
     end
     shipment_optimizer.shipments
   end
