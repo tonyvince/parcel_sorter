@@ -9,17 +9,22 @@ class Shipment
     @total_weight = 0
   end
 
-  def add_parcel(parcel)
-    return false unless can_add_parcel?(parcel)
+  def add_parcels(parcels)
+    parcel_weight = parcels.sum { |parcel| parcel[:weight] }
+    return false unless can_add_parcels?(parcel_weight)
 
-    @parcels << parcel
-    @total_weight += parcel[:weight]
+    @parcels += parcels
+    @total_weight += parcel_weight
     true
+  end
+
+  def remaining_weight_capacity
+    MAX_WEIGHT - @total_weight
   end
 
   private
 
-  def can_add_parcel?(parcel)
-    @total_weight + parcel[:weight] <= MAX_WEIGHT
+  def can_add_parcels?(parcel_weight)
+    @total_weight + parcel_weight <= MAX_WEIGHT
   end
 end

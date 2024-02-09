@@ -1,47 +1,33 @@
 require_relative '../../lib/shipment_optimizer'
-require_relative '../../lib/parcel_loader'
-require_relative '../../lib/shipment_generator'
 require_relative '../../lib/shipment'
 
 RSpec.describe ShipmentOptimizer do
-  let(:input_file_path) { 'spec/fixtures/test_input.csv' }
+  let(:shipment_optimizer) { described_class.new }
 
-  before do
-    CSV.open(input_file_path, 'wb') do |csv|
-      csv << ['parcel_ref', 'client_name', 'weight']
-      csv << ['P1', 'Client A', 100]
-      csv << ['P2', 'Client B', 500]
-      csv << ['P3', 'Client B', 1900]
-      csv << ['P4', 'Client A', 800]
-      csv << ['P5', 'Client C', 300]
-    end
-  end
+  let(:parcel_small) { { parcel_ref: 'P1', client_name: 'Client A', weight: 100 } }
+  let(:parcel_medium) { { parcel_ref: 'P2', client_name: 'Client A', weight: 500 } }
+  let(:parcel_large) { { parcel_ref: 'P3', client_name: 'Client B', weight: 2000 } }
 
-  after do
-    File.delete(input_file_path) if File.exist?(input_file_path)
-  end
+  describe '#add_parcels_from_client' do
+    context 'when adding parcels that fit within a single shipment' do
+      it 'creates one shipment for all parcels from the same client' do
+        shipment_optimizer.add_parcels_from_client('Client A', [parcel_small, parcel_medium])
 
-  describe '#optimize' do
-    it 'optimizes parcel distribution into shipments' do
-      optimizer = ShipmentOptimizer.new(input_file_path)
-      optimized_shipments = optimizer.optimize
-
-
-      total_weight_limit = Shipment::MAX_WEIGHT # 2311 kg
-      total_parcel_count = 5
-
-      total_assigned_parcels = optimized_shipments.sum { |shipment| shipment.parcels.size }
-      expect(total_assigned_parcels).to eq(total_parcel_count)
-
-      # Verify that no shipment exceeds the weight limit
-      optimized_shipments.each do |shipment|
-        expect(shipment.total_weight).to be <= total_weight_limit
+        expect(shipment_optimizer.shipments.size).to eq(1)
+        expect(shipment_optimizer.shipments.first.parcels.size).to eq(2)
+        expect(shipment_optimizer.shipments.first.total_weight).to eq(parcel_small[:weight] + parcel_medium[:weight])
       end
-      # - Client A's parcels to be in one shipment (because their combined weight is 900, which is under the limit)
-      # - Client B's parcels possibly in two separate shipments due to the large parcel weight
-      # - Client C's parcel fitting into its own shipment
-      # Assuming an efficient optimization, there should be 3 shipments based on the sample data
-      expect(optimized_shipments.size).to eq(4)
+    end
+
+    context 'when adding parcels that require multiple shipments due to weight limit' do
+      it 'creates multiple shipments for a single client' do
+        parcels = Array.new(5) { parcel_large } # Total weight would exceed the limit of a single shipment
+        shipment_optimizer.add_parcels_from_client('Client B', parcels)
+
+        expect(shipment_optimizer.shipments.size).to eq 5
+        all_parcels = shipment_optimizer.shipments.flat_map(&:parcels)
+        expect(all_parcels).to match_array(parcels)
+      end
     end
   end
 end

@@ -1,15 +1,28 @@
 class ShipmentOptimizer
-  def initialize(file_path)
-    @loader = ParcelLoader.new(file_path)
+  attr_reader :shipments
+
+  def initialize
+    @shipments = []
   end
 
-  def optimize
-    @loader.load_and_sort_parcels
-    shipment_generator = ShipmentGenerator.new
-    parcels_by_client = @loader.parcels.group_by { |parcel| parcel[:client_name] }
-    parcels_by_client.each do |client, parcels|
-      shipment_generator.add_parcels_from_client(client, parcels)
+  def add_parcels_from_client(parcels)
+    unless add_parcel_to_existing_shipment(parcels)
+      create_new_shipment(parcels)
     end
-    shipment_generator.shipments
+  end
+
+  private
+
+  def add_parcel_to_existing_shipment(parcels)
+    shipments.each do |shipment|
+      return true if shipment.add_parcels(parcels)
+    end
+    false
+  end
+
+  def create_new_shipment(parcels)
+    shipment = Shipment.new
+    shipment.add_parcels(parcels)
+    shipments << shipment
   end
 end

@@ -9,6 +9,9 @@ class CsvWriter
         shipment.parcels.each do |parcel|
           csv << [parcel[:parcel_ref], parcel[:client_name], parcel[:weight], shipment_id_str]
         end
+        puts "Shipment #{shipment_id_str} created with #{shipment.parcels.size} parcels " \
+             "with weight #{shipment.total_weight} and " \
+             "remaining capacity #{shipment.remaining_weight_capacity}"
       end
     end
   end
