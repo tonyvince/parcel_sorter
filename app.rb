@@ -4,9 +4,8 @@ require_relative "lib/parcel_manager"
 require_relative "lib/csv_writer"
 require_relative "lib/shipment"
 
-input_file_path = File.join(File.dirname(__FILE__), 'data', 'input.csv')
-output_file_path = File.join(File.dirname(__FILE__), 'data', 'output.csv')
-
+input_file_path = File.join(File.dirname(__FILE__), "data", "input.csv")
+output_file_path = File.join(File.dirname(__FILE__), "data", "output.csv")
 
 parcel_manager = ParcelManager.new(input_file_path)
 optimized_shipments = parcel_manager.optimize

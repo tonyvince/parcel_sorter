@@ -1,19 +1,19 @@
-require_relative '../../lib/parcel_loader'
-require_relative '../../lib/parcel_manager'
-require_relative '../../lib/shipment_optimizer'
-require_relative '../../lib/shipment'
+require_relative "../../lib/parcel_loader"
+require_relative "../../lib/parcel_manager"
+require_relative "../../lib/shipment_optimizer"
+require_relative "../../lib/shipment"
 
 RSpec.describe ParcelManager do
-  let(:input_file_path) { 'spec/fixtures/test_input.csv' }
+  let(:input_file_path) { "spec/fixtures/test_input.csv" }
 
   before do
-    CSV.open(input_file_path, 'wb') do |csv|
-      csv << ['parcel_ref', 'client_name', 'weight']
-      csv << ['P1', 'Client A', 100]
-      csv << ['P2', 'Client B', 411]
-      csv << ['P3', 'Client B', 1900]
-      csv << ['P4', 'Client A', 800]
-      csv << ['P5', 'Client C', 300]
+    CSV.open(input_file_path, "wb") do |csv|
+      csv << ["parcel_ref", "client_name", "weight"]
+      csv << ["P1", "Client A", 100]
+      csv << ["P2", "Client B", 411]
+      csv << ["P3", "Client B", 1900]
+      csv << ["P4", "Client A", 800]
+      csv << ["P5", "Client C", 300]
     end
   end
 
@@ -21,11 +21,10 @@ RSpec.describe ParcelManager do
     File.delete(input_file_path) if File.exist?(input_file_path)
   end
 
-  describe '#optimize' do
-    it 'optimizes parcel distribution into shipments' do
+  describe "#optimize" do
+    it "optimizes parcel distribution into shipments" do
       optimizer = ParcelManager.new(input_file_path)
       optimized_shipments = optimizer.optimize
-
 
       total_weight_limit = Shipment::MAX_WEIGHT # 2311 kg
       total_parcel_count = 5
