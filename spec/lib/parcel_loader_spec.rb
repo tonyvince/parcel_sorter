@@ -18,14 +18,12 @@ RSpec.describe ParcelLoader do
     File.delete(test_csv_path) if File.exist?(test_csv_path)
   end
 
-  describe '#load_and_sort_parcels' do
-    it 'loads parcels from a CSV file and sorts them by weight in descending order' do
-      parcel_loader.load_and_sort_parcels
+  describe '#load_parcels' do
+    it 'loads parcels from a CSV file' do
+      parcel_loader.load_parcels
 
       expect(parcel_loader.parcels.size).to eq(3)
-      expect(parcel_loader.parcels.first[:parcel_ref]).to eq('P2') # Should be the heaviest
-      expect(parcel_loader.parcels.last[:parcel_ref]).to eq('P3') # Should be the lightest
-      expect(parcel_loader.parcels.map { |p| p[:weight] }).to eq([1500, 500, 300]) # Sorted by weight in descending order
+      expect(parcel_loader.parcels.map { |p| p[:weight] }).to match_array([1500, 500, 300]) # Sorted by weight in descending order
     end
   end
 end

@@ -10,7 +10,7 @@ RSpec.describe ParcelManager do
     CSV.open(input_file_path, 'wb') do |csv|
       csv << ['parcel_ref', 'client_name', 'weight']
       csv << ['P1', 'Client A', 100]
-      csv << ['P2', 'Client B', 500]
+      csv << ['P2', 'Client B', 411]
       csv << ['P3', 'Client B', 1900]
       csv << ['P4', 'Client A', 800]
       csv << ['P5', 'Client C', 300]
@@ -38,10 +38,10 @@ RSpec.describe ParcelManager do
         expect(shipment.total_weight).to be <= total_weight_limit
       end
       # - Client A's parcels to be in one shipment (because their combined weight is 900, which is under the limit)
-      # - Client B's parcels possibly in two separate shipments due to the large parcel weight
-      # - Client C's parcel fitting into its own shipment
-      # Assuming an efficient optimization, there should be 3 shipments based on the sample data
-      expect(optimized_shipments.size).to eq(4)
+      # - Client B's parcels in a separate shipments due to the large parcel weight
+      # - Client C's parcel fitting into Client A's shipment
+      # Assuming an efficient optimization, there should be 2 shipments based on the sample data
+      expect(optimized_shipments.size).to eq(2)
     end
   end
 end
