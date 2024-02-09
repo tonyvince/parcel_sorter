@@ -1,0 +1,26 @@
+name: Ruby CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.2  # Specify your Ruby version here
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    - name: Run linter
+      run: bundle exec standardrb
+
+    - name: Run tests
+      run: bundle exec rspec
