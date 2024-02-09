@@ -1,4 +1,9 @@
+# Handles the creation and writing of optimized shipment data to a CSV file.
+# Additionally, outputs shipment details to the console for transparency.
 class CsvWriter
+  # Writes shipment details to a specified CSV file.
+  # @param shipments [Array<Shipment>] Array of optimized shipments.
+  # @param output_path [String] Path to the output CSV file.
   def self.write(shipments, output_path)
     CSV.open(output_path, "wb") do |csv|
       csv << ["parcel_ref", "client_name", "weight", "shipment_id"]

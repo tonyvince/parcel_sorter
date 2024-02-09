@@ -1,8 +1,11 @@
+# Responsible for loading parcel data from a CSV file into a structured format.
+# Each parcel is represented as a hash with keys for parcel reference, client name, and weight.
 require "csv"
 
 class ParcelLoader
   attr_reader :parcels
 
+  # @param file_path [String] Path to the input CSV file.
   def initialize(file_path)
     @file_path = file_path
     @parcels = []

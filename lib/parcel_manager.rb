@@ -1,9 +1,13 @@
+# Orchestrates the process of loading parcels and optimizing their distribution into shipments.
+# Utilizes ParcelLoader to fetch parcel data and ShipmentOptimizer to allocate parcels efficiently.
 class ParcelManager
   def initialize(file_path)
     @loader = ParcelLoader.new(file_path)
     @shipment_optimizer = ShipmentOptimizer.new
   end
 
+  # Optimizes parcel distribution into shipments to minimize the total number and weight distribution.
+  # @return [Array<Shipment>] Array of optimized shipments.
   def optimize
     @loader.load_parcels
     # sort parcels by weight in descending order (heaviest first)
